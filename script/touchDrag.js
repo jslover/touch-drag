@@ -1,7 +1,7 @@
 ﻿﻿/**
 * @Class
 * @description 触屏版拖动组件，支持多示例，支持X\Y轴限制，支持范围限制
-* @author yh
+* @author http://jslover.com
 * @version 1.0  2012.10.30
 */
 (function ($) {
