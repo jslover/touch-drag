@@ -2,94 +2,183 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>drag</title>
+    <title>触屏版拖拽组件-touchDrag</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, minimum-scale=1, user-scalable=no,target-densitydpi=medium-dpi">
     <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-    <script src="script/touch-drag.js" type="text/javascript"></script>
     <style>
         * { padding: 0; margin: 0; }
-        .div-drag { position: absolute; width: 100px; height: 100px; border: 1px solid red; background: #fff; }
-        .div-drag h1 { background: #ccc; font-size: 12px; height: 50px; line-height: 50px; }
+        body { background: #555; text-align: center; }
+        #header { height: 80px; }
+        #contenter { background: #fff; }
+        .wrap { width: 80%; margin: auto; text-align: left; max-width: 1200px; }
+        .demo { position: relative; width: 100%; height: 500px; border: 1px solid #ccc; margin: 10px 0; }
+        .demo .btn-show-code { position: absolute; top: 10px; right: 10px; text-decoration: none; color: #555; }
+        .demo .btn-show-code:hover { color: #000; text-decoration: underline; }
+        #code-view-win { width: 70%; text-align: left; position: fixed; background: #555; z-index: 9999999; left: 15%; top: 40%; margin-top: -150px; border: 1px solid #333; border-radius: 5px; box-shadow: 0 0 12px #000; }
+        #code-view-win textarea { outline: none; width: 100%; height: 100%; font-size: 12px; background: #555; color: #ddd; border: none; resize: none; overflow: auto; height: 300px; border-radius: 5px; }
+        #code-view-win .btn-close-code { position: absolute; z-index: 2; right: -14px; top: -14px; display: block; width: 30px; height: 30px; text-decoration: none; background: #333; line-height: 30px; text-align: center; color: #fff; border-radius: 15px; box-shadow: 0 0 10px #888; }
+        #code-view-win .btn-close-code:hover { color: Red; }
+        #header { }
+        #header .wrap { position: relative; }
+        #header h1 { line-height: 50px; font-size: 26px; color: #ddd; }
+        #header p { color: #888; }
+        #header ul { position: absolute; right: 0px; bottom: 0; list-style: none; }
+        #header ul li { float: left; }
+        #header ul li a { display: block; text-decoration: none; margin: 0 0 0 10px; background: #444; font-size: 14px; padding: 10px; color: #ccc; }
+        #header ul li a:hover { background: #222; }
+        #footer { padding: 10px 0; color: #aaa; line-height: 1.8; }
+        #footer a { text-decoration: none; color: #aaa; }
+        #footer a:hover { text-decoration: none; color: #fff; }
     </style>
-</head>
-<body>
-    <div data-role="page" data-fullscreen="true" id="">
-    <h1> 触屏版拖动组件</h1>
-        <div class="div-drag">
-            <h1>
-                我只能上下拖动</h1>
-            <p>
-                ddddddddddd</p>
-        </div>
-        <div class="div-drag" style="left: 150px;">
-            <h1>
-                我只能左右拖动</h1>
-            <p>
-                ddddddddddd</p>
-        </div>
-        <div class="div-drag" style="left: 80px; top: 120px;z-index:99999">
-            <h1>
-                我能任意拖动</h1>
-            <p>
-                ddddddddddd</p>
-        </div>
-        <div style="position: absolute; border: 1px solid red; width: 250px; height: 300px;
-            top: 250px; left: 20px; overflow: hidden;">
-            <div class="div-drag" style="left: 10px; top: 10px;">
-                <h1>
-                    我只能在框里拖</h1>
-                <p>
-                    我这里也能拖</p>
-            </div>
-        </div>
-        <style>
-            .div-menu{width:800px;height:60px;position:absolute;left: 0; top: 0;}
-            .div-menu a{width:99px;border:1px solid #ccc;margin-left:-1px;height:58px;line-height:58px;display:inline-block;color:#fff}
-        </style>
-        <div style="position:absolute;bottom:0;border:1px solid red;border-left:0;border-right:0;width:100%;height:60px;left:0;overflow:hidden;text-align:center;background:#555;">
-                <div class="div-menu" >
-                    <a href="#">菜单</a><a href="#">也能</a><a href="#">拖动</a><a href="#">菜单4</a><a href="#">菜单5</a><a href="#">菜单6</a><a href="#">菜单7</a><a href="#">菜单8</a>
-           
-                </div>
-        </div>
-    </div>
     <script>
-        $('.div-drag').eq(0).touchDrag({
-            dragbar: 'h1'
-            , dragX: false
-        });
-        $('.div-drag').eq(1).touchDrag({
-            dragbar: 'h1'
-            , dragY: false
-        });
-        $('.div-drag').eq(2).touchDrag({
-            dragbar: 'h1'
-        });
-        $('.div-drag').eq(3).touchDrag({
-            dragbar: ''
-            , minLeft: 0
-            , minTop: 0
-            , maxLeft: 250 - 102
-            , maxTop: 300 - 102
-        });
-
-        var minLeft = $('.div-menu').parent().width() - $('.div-menu').width();
-        if (minLeft > 0) {
-            minLeft = 0;
-        }
-        var $menu = $('.div-menu').touchDrag({
-            dragY: false
-            , minLeft: minLeft
-            , maxLeft: 0.1
-        });
-        $(window).resize(function () {
-            var minLeft = $('.div-menu').parent().width() - $('.div-menu').width();
-            if (minLeft > 0) {
-                minLeft = 0;
-            }
-            $menu.touchDrag[0].minLeft = minLeft;
-
+        $(function () {
+            $('.demo').append('<a href="#" class="btn-show-code">查看源码</a>');
+            $('.btn-show-code').click(function () {
+                var $demo = $(this).parent().clone();
+                $demo.find('a.btn-show-code').remove();
+                if (!$.$codeViewWin) {
+                    $.$codeViewWin = $('<div id="code-view-win" style="display:none;"><textarea></textarea><a href="#" class="btn-close-code">x</a></div>').appendTo($('body'));
+                    $.$codeViewWin.find('.btn-close-code').click(function () {
+                        $.$codeViewWin.fadeOut(200);
+                        return false;
+                    });
+                }
+                $.$codeViewWin.fadeIn(200).find('textarea').val($demo.html());
+                return false;
+            });
         });
     </script>
+</head>
+<body>
+    <div id="header">
+        <div class="wrap">
+            <h1>
+                触屏版拖拽组件</h1>
+            <p>
+                http://jslover.github.com/touch-drag/
+            </p>
+            <ul>
+                <li><a href="http://jslover.github.com">返回首页</a></li>
+                <li><a href="https://github.com/jslover/touch-drag">下载源码</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="contenter">
+        <div class="wrap">
+            <br />
+            <div class="demo-js-css">
+                <!--必须引用的js-->
+                <script src="script/touch-drag.js" type="text/javascript"></script>
+            </div>
+            <h3>
+                demo1:默认</h3>
+            <div class="demo" style="height: 200px">
+                <div id="demo_1" class="div-drag">
+                    <h1>
+                        我能任意拖动</h1>
+                    <p>
+                        ddddddddddd</p>
+                </div>
+                <!--当前demo需要的css-->
+                <style>
+                    .div-drag { position: absolute; width: 100px; height: 100px; border: 1px solid red; background: #fff; }
+                    .div-drag h1 { background: #ccc; font-size: 12px; height: 50px; line-height: 50px; }
+                </style>
+                <script>
+                    //默认，不限制
+                    $('#demo_1').touchDrag({
+                        dragbar: 'h1'
+                    });
+                </script>
+            </div>
+            <h3>
+                demo2:限制在X轴/Y轴方向拖动</h3>
+            <div class="demo" style="height: 200px">
+                <div id="demo_2_1" class="div-drag">
+                    我只能上下拖动
+                </div>
+                <div id="demo_2_2" class="div-drag" style="left: 150px;">
+                    我只能左右拖动
+                </div>
+                <script>
+                    //只能在Y轴
+                    $('#demo_2_1').touchDrag({
+                        dragX: false
+                    });
+                    //只能在X轴
+                    $('#demo_2_2').touchDrag({
+                        dragY: false
+                    });
+                </script>
+            </div>
+            <h3>
+                demo3:限制在限定范围内拖动</h3>
+            <div class="demo" style="height: 200px">
+                <div style="position: absolute; border: 1px solid red; width: 350px; height: 150px;
+                    top: 10px; left: 10px; overflow: hidden;">
+                    <div id="demo_3" class="div-drag">
+                        我只能在框里拖
+                    </div>
+                </div>
+                <script>
+                    $('#demo_3').touchDrag({
+                        minLeft: 0
+                        , minTop: 0
+                        , maxLeft: 350 - 102
+                        , maxTop: 150 - 102
+                    });
+                </script>
+            </div>
+            <h3>
+                demo4:菜单示例</h3>
+            <div class="demo" style="height: 200px">
+                <!--菜单外层容器，注意overflow: hidden; -->
+                <div style="position: absolute; bottom: 0; border: 1px solid red; height: 60px; left: 0;
+                    right: 0; overflow: hidden; text-align: center; background: #555;">
+                    <!--拖动菜单-->
+                    <div id="demo_4" class="div-menu">
+                        <a href="#">菜单</a><a href="#">也能</a><a href="#">拖动</a><a href="#">菜单4</a><a href="#">菜单5</a><a
+                            href="#">菜单6</a><a href="#">菜单7</a><a href="#">菜单8</a><a href="#">菜单9</a><a href="#">菜单10</a>
+                    </div>
+                </div>
+                <!--当前demo需要的css-->
+                <style>
+                    .div-menu { width: 1800px; height: 60px; position: absolute; left: 0; top: 0; }
+                    .div-menu a { width: 179px; border: 1px solid #ccc; margin-left: -1px; height: 58px; line-height: 58px; display: inline-block; color: #fff; }
+                </style>
+                <script>
+                    //菜单边界值
+                    var minLeft = $('#demo_4').parent().width() - $('#demo_4').width();
+                    if (minLeft > 0) {
+                        minLeft = 0;
+                    }
+                    var $menu = $('#demo_4').touchDrag({
+                        dragY: false
+                        , minLeft: minLeft
+                        , maxLeft: 0.1
+                    });
+                    /*外层容器变化时候，更新菜单参数*/
+                    $(window).resize(function () {
+                        var minLeft = $('#demo_4').parent().width() - $('#demo_4').width();
+                        if (minLeft > 0) {
+                            minLeft = 0;
+                        }
+                        //对象保存在jq对象里
+                        $menu.touchDrag[0].minLeft = minLeft;
+                    });
+
+                </script>
+            </div>
+            <br />
+        </div>
+    </div>
+    <div id="footer">
+        <div class="wrap">
+            <p>
+                <a href="http://jslover.com">http://jslover.com</a></p>
+            <p>
+                <a href="http://jslover.github.com">http://jslover.github.com</a></p>
+        </div>
+    </div>
 </body>
 </html>

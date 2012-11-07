@@ -6,7 +6,7 @@
 */
 (function ($) {
     //是否调试
-    var isDebug = true;
+    var isDebug = false;
     //几个手势动作
     var isTouch = 'ontouchstart' in document;
     var touchStart = isTouch?'touchstart':'mousedown';
@@ -157,10 +157,10 @@
         ,dragX:true
         ,dragY:true
         //最小位置、最大位置
-        ,minLeft:0
-        ,minTop:0
-        ,maxLeft:9999
-        ,maxTop:9999            
+        ,minLeft:-1999
+        ,minTop:-1999
+        ,maxLeft:1999
+        ,maxTop:1999            
     };
     //日记调试
     var $loger;
